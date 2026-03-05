@@ -1,0 +1,112 @@
+@page
+@model TheWeebDenShop.Pages.ContactModel
+@{
+    ViewData["Title"] = "Contact";
+    ViewData["Description"] = "Have questions about our manga collection or need help with an order? Contact The Weeb Den.";
+}
+
+<main class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="text-center mb-4">Contact The Weeb Den</h1>
+                <p class="lead text-center mb-5">
+                    Have questions about our manga collection or need help with an order?
+                    We're here to help! Send us a message and we'll get back to you within 24 hours.
+                </p>
+
+                @* Success message after form submission *@
+                @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>@Model.SuccessMessage
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <div class="card">
+                    <div class="card-body p-4">
+                        @* Contact form — uses Razor model binding and server-side validation *@
+                        <form method="post" asp-page="/Contact">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ContactForm.Name" class="form-label"></label>
+                                    <input asp-for="ContactForm.Name" class="form-control" placeholder="Enter your full name" />
+                                    <span asp-validation-for="ContactForm.Name" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ContactForm.Email" class="form-label"></label>
+                                    <input asp-for="ContactForm.Email" class="form-control" placeholder="your.email@example.com" />
+                                    <span asp-validation-for="ContactForm.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ContactForm.Subject" class="form-label"></label>
+                                <select asp-for="ContactForm.Subject" class="form-select">
+                                    <option value="">Choose a subject...</option>
+                                    <option value="order">Order Inquiry</option>
+                                    <option value="product">Product Question</option>
+                                    <option value="shipping">Shipping &amp; Returns</option>
+                                    <option value="general">General Support</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label asp-for="ContactForm.Message" class="form-label"></label>
+                                <textarea asp-for="ContactForm.Message" class="form-control" rows="5"
+                                          placeholder="Tell us how we can help you..."></textarea>
+                                <span asp-validation-for="ContactForm.Message" class="text-danger"></span>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Info Cards -->
+                <div class="row mt-5">
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-headset fa-3x text-primary"></i>
+                                </div>
+                                <h5 class="card-title fw-bold">Customer Support</h5>
+                                <p class="card-text text-primary fw-semibold">support@theweebden.com</p>
+                                <p class="text-muted small mb-0">Response within 24 hours</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-clock fa-3x text-success"></i>
+                                </div>
+                                <h5 class="card-title fw-bold">Business Hours</h5>
+                                <p class="card-text text-dark">Monday - Friday<br />9:00 AM - 6:00 PM JST</p>
+                                <p class="text-muted small mb-0">Weekend support available</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-exchange-alt fa-3x text-warning"></i>
+                                </div>
+                                <h5 class="card-title fw-bold">Returns &amp; Exchanges</h5>
+                                <p class="card-text text-dark">30-day return policy</p>
+                                <p class="text-muted small mb-0">Free return shipping</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

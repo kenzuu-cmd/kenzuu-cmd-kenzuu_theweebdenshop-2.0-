@@ -1,0 +1,55 @@
+@* =========================================================================
+   _ProductCard.cshtml — Reusable partial for rendering a product card.
+   Replaces the renderProductCard() JS function with server-rendered Razor.
+   Used on Index (featured), Products (catalog), and ProductDetail (related).
+   ========================================================================= *@
+@model Product
+
+<div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+    <div class="card product-card h-100 shadow-sm">
+        <div class="position-relative overflow-hidden">
+            @if (Model.Stock < 10 && Model.Stock > 0)
+            {
+                <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2">Low Stock</span>
+            }
+            else if (Model.Stock == 0)
+            {
+                <span class="badge bg-danger position-absolute top-0 end-0 m-2">Out of Stock</span>
+            }
+            <img src="~/images/@System.IO.Path.GetFileName(Model.Image)" class="card-img-top" alt="@Model.Name" loading="lazy" />
+        </div>
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="author-info mb-2"><i class="fas fa-user-edit me-1"></i>@Model.Author</p>
+            <div class="rating mb-2">
+                @ProductHtmlHelpers.GenerateStars(Html, Model.Rating)
+                <small class="text-muted ms-1">(@Model.Rating)</small>
+            </div>
+            <div class="price-section mb-2">
+                <span class="price">@ProductHtmlHelpers.FormatPrice(Model.Price)</span>
+                <span class="genre-badge">@Model.Genre</span>
+            </div>
+            <p class="card-text text-muted small mb-3">@Model.Short</p>
+            <div class="btn-group mt-auto">
+                <a asp-page="/ProductDetail" asp-route-id="@Model.Id" class="btn btn-sm btn-details">
+                    <i class="fas fa-info-circle me-1"></i>Details
+                </a>
+                @if (Model.Stock > 0)
+                {
+                    <form method="post" asp-page="/Products" asp-page-handler="AddToCart" class="d-inline">
+                        <input type="hidden" name="productId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-sm btn-add">
+                            <i class="fas fa-cart-plus me-1"></i>Add
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <button class="btn btn-sm btn-add" disabled>
+                        <i class="fas fa-ban me-1"></i>Out of Stock
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

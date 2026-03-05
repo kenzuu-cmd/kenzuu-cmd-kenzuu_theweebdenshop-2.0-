@@ -1,0 +1,248 @@
+@page
+@model TheWeebDenShop.Pages.IndexModel
+@{
+    ViewData["Title"] = "Your Ultimate Manga Paradise";
+    ViewData["Description"] = "Discover authentic Japanese manga, light novels, and collectibles at The Weeb Den. Your ultimate otaku paradise with rare editions and exclusive imports.";
+}
+
+<main class="main-content">
+    <!-- Hero Section with Carousel Background -->
+    <section class="hero">
+        <!-- Background Carousel -->
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="hero-bg hero-bg-1"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="hero-bg hero-bg-2"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="hero-bg hero-bg-3"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="hero-bg hero-bg-4"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="hero-bg hero-bg-5"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="hero-bg hero-bg-6"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Content Overlay -->
+        <div class="hero-overlay"></div>
+        <div class="container hero-container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-7 col-xl-6">
+                    <div class="hero-content">
+                        <span class="hero-badge mb-3">
+                            <i class="fas fa-star me-2"></i>Premium Manga Collection
+                        </span>
+                        <h1 class="hero-title mb-4">
+                            <span class="text-jp">ようこそ</span> The Weeb Den
+                        </h1>
+                        <p class="hero-subtitle mb-4">
+                            Your ultimate otaku paradise for authentic Japanese manga,
+                            light novels, and collectibles. Discover rare editions,
+                            complete series, and exclusive imports from the heart of Japan.
+                        </p>
+                        <div class="hero-buttons d-flex flex-wrap gap-3">
+                            <a asp-page="/Products" class="btn btn-hero-primary btn-lg">
+                                <i class="fas fa-book me-2"></i>Shop Now
+                            </a>
+                            <a asp-page="/About" class="btn btn-hero-secondary btn-lg">
+                                <i class="fas fa-info-circle me-2"></i>Learn More
+                            </a>
+                        </div>
+                        <!-- Trust Indicators -->
+                        <div class="row mt-5 g-4">
+                            <div class="col-4">
+                                <div class="text-white">
+                                    <h3 class="fw-bold mb-0">500+</h3>
+                                    <small class="text-white-50">Products</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="text-white">
+                                    <h3 class="fw-bold mb-0">5K+</h3>
+                                    <small class="text-white-50">Happy Customers</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="text-white">
+                                    <h3 class="fw-bold mb-0">4.9★</h3>
+                                    <small class="text-white-50">Ratings</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Scroll Indicator -->
+        <div class="position-absolute bottom-0 start-50 translate-middle-x mb-4">
+            <a href="#featured" class="text-white text-decoration-none">
+                <i class="fas fa-chevron-down fa-2x animate-bounce"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Featured Products Section — server-rendered instead of JS-loaded -->
+    <section class="section bg-light" id="featured">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="display-5 fw-bold mb-3">Featured Manga Collection</h2>
+                    <p class="lead text-muted">
+                        Handpicked selections from our vast collection of premium manga and light novels
+                    </p>
+                </div>
+            </div>
+
+            <div id="featuredProducts" class="row g-4 mb-4">
+                @foreach (var product in Model.FeaturedProducts)
+                {
+                    await Html.RenderPartialAsync("_ProductCard", product);
+                }
+            </div>
+
+            <div class="text-center mt-5">
+                <a asp-page="/Products" class="btn btn-primary btn-lg shadow">
+                    <i class="fas fa-eye me-2"></i>View All Products
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="display-5 fw-bold mb-3">Why Choose The Weeb Den?</h2>
+                    <p class="lead text-muted">
+                        We're passionate about bringing you the finest Japanese literature and collectibles
+                    </p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">Authentic Imports</h5>
+                            <p class="card-text text-muted small">
+                                Direct imports from Japan ensuring you get genuine, high-quality manga and light novels.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-gem"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">Rare Collections</h5>
+                            <p class="card-text text-muted small">
+                                Exclusive access to limited editions, first prints, and hard-to-find series from top publishers.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">Fast Delivery</h5>
+                            <p class="card-text text-muted small">
+                                Quick and secure shipping with careful packaging to ensure your items arrive in perfect condition.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">24/7 Support</h5>
+                            <p class="card-text text-muted small">
+                                Dedicated customer support team ready to assist you with any questions or concerns.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section bg-gradient-accent text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <i class="fas fa-shopping-bag fa-3x mb-4 opacity-75"></i>
+                    <h2 class="display-5 fw-bold mb-3 text-white">Ready to Start Your Collection?</h2>
+                    <p class="lead mb-4 text-white">
+                        Join thousands of fellow otaku who trust The Weeb Den for their manga and collectible needs.
+                    </p>
+                    <div class="cta-buttons d-flex flex-wrap gap-3 justify-content-center">
+                        <a asp-page="/Products" class="btn btn-light btn-lg shadow">
+                            <i class="fas fa-shopping-bag me-2"></i>Start Shopping
+                        </a>
+                        <a asp-page="/Contact" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-question-circle me-2"></i>Have Questions?
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section — uses Razor form handling with server-side validation -->
+    <section class="section bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <i class="fas fa-envelope-open-text fa-3x text-primary mb-3"></i>
+                    <h3 class="fw-bold mb-3">Stay Updated</h3>
+                    <p class="text-muted mb-4">Subscribe to get exclusive deals and new arrivals!</p>
+
+                    @if (!string.IsNullOrEmpty(Model.NewsletterMessage))
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>@Model.NewsletterMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form method="post" asp-page-handler="Newsletter" class="row g-2">
+                        <div class="col-md-8">
+                            <input type="email" class="form-control form-control-lg"
+                                   placeholder="Enter your email" name="email" required />
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <i class="fas fa-paper-plane me-1"></i>Subscribe
+                            </button>
+                        </div>
+                    </form>
+                    <small class="text-muted d-block mt-2">
+                        <i class="fas fa-lock me-1"></i>We respect your privacy
+                    </small>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

@@ -1,0 +1,123 @@
+@page
+@model TheWeebDenShop.Pages.CartModel
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<main class="main-content">
+    <section class="py-5">
+        <div class="container">
+            <h2 class="mb-4"><i class="fas fa-shopping-cart me-2"></i>Shopping Cart</h2>
+
+            @if (!Model.CartItems.Any())
+            {
+                <!-- Empty cart message -->
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 class="empty-state-title">Your cart is empty</h3>
+                    <p class="empty-state-description">
+                        Looks like you haven't added any manga to your cart yet. Explore our collection and find your next favorite read!
+                    </p>
+                    <a asp-page="/Products" class="btn btn-primary btn-lg px-5">
+                        <i class="fas fa-book me-2"></i>Browse Products
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-lg-8">
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <div class="cart-item mb-3 bg-white rounded-3 shadow-sm overflow-hidden border border-light">
+                                <div class="row g-0 align-items-center">
+                                    <div class="col-lg-2 col-md-3 col-4">
+                                        <div class="position-relative" style="padding-top: 130%;">
+                                            <img src="~/images/@System.IO.Path.GetFileName(item.Image)"
+                                                 class="position-absolute top-0 start-0 w-100 h-100"
+                                                 style="object-fit: cover;" alt="@item.Name" loading="lazy" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-10 col-md-9 col-8">
+                                        <div class="p-3 p-md-4">
+                                            <div class="row g-3 align-items-center">
+                                                <div class="col-lg-4 col-md-12">
+                                                    <h5 class="mb-2 fw-bold text-truncate">@item.Name</h5>
+                                                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                                                        <span class="badge bg-primary-subtle text-primary border border-primary">
+                                                            @ProductHtmlHelpers.FormatPrice(item.Price) each
+                                                        </span>
+                                                        <small class="text-muted"><i class="fas fa-box me-1"></i>Stock: @item.Stock</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-5 col-12">
+                                                    <label class="form-label small text-muted mb-2">Quantity</label>
+                                                    <div class="input-group">
+                                                        <form method="post" asp-page-handler="UpdateQuantity" class="d-inline">
+                                                            <input type="hidden" name="productId" value="@item.Id" />
+                                                            <input type="hidden" name="change" value="-1" />
+                                                            <button type="submit" class="btn btn-outline-primary"><i class="fas fa-minus"></i></button>
+                                                        </form>
+                                                        <input type="text" class="form-control text-center fw-bold" value="@item.Quantity" readonly style="max-width: 60px;" />
+                                                        <form method="post" asp-page-handler="UpdateQuantity" class="d-inline">
+                                                            <input type="hidden" name="productId" value="@item.Id" />
+                                                            <input type="hidden" name="change" value="1" />
+                                                            <button type="submit" class="btn btn-outline-primary"><i class="fas fa-plus"></i></button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-7">
+                                                    <label class="form-label small text-muted mb-2">Subtotal</label>
+                                                    <h4 class="mb-0 text-primary fw-bold">@ProductHtmlHelpers.FormatPrice(item.Subtotal)</h4>
+                                                </div>
+                                                <div class="col-lg-2 col-md-3 col-5 text-end">
+                                                    <form method="post" asp-page-handler="RemoveItem">
+                                                        <input type="hidden" name="productId" value="@item.Id" />
+                                                        <button type="submit" class="btn btn-outline-danger" title="Remove item">
+                                                            <i class="fas fa-trash-alt me-1"></i><span class="d-none d-md-inline">Remove</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Order Summary</h5>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Subtotal:</span>
+                                    <strong>@ProductHtmlHelpers.FormatPrice(Model.Subtotal)</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Tax (8%):</span>
+                                    <strong>@ProductHtmlHelpers.FormatPrice(Model.Tax)</strong>
+                                </div>
+                                <hr />
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span class="h5">Total:</span>
+                                    <strong class="h5 text-primary">@ProductHtmlHelpers.FormatPrice(Model.Total)</strong>
+                                </div>
+                                <a asp-page="/Checkout" class="btn btn-primary w-100 mb-2">
+                                    <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
+                                </a>
+                                <form method="post" asp-page-handler="ClearCart">
+                                    <button type="submit" class="btn btn-outline-danger w-100"
+                                            onclick="return confirm('Are you sure you want to clear your cart?');">
+                                        <i class="fas fa-trash me-2"></i>Clear Cart
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</main>

@@ -1,0 +1,98 @@
+@page
+@model TheWeebDenShop.Pages.ProductsModel
+@{
+    ViewData["Title"] = "Products";
+    ViewData["Description"] = "Browse our curated selection of authentic Japanese manga, light novels, and collectibles.";
+}
+
+<main class="main-content">
+    <!-- Products header -->
+    <section class="products-header bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold mb-3">Manga Collection</h1>
+                    <p class="lead text-muted">
+                        Discover our curated selection of authentic Japanese manga, light novels, and collectibles.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products filters — converted from JS-driven to server-side form submission -->
+    <section class="py-4 bg-white shadow-sm sticky-filter">
+        <div class="container">
+            <form method="get" class="row g-3 align-items-center">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted" aria-hidden="true"></i>
+                        </span>
+                        <input type="text" name="search" value="@Model.SearchTerm"
+                               class="form-control border-start-0 ps-0"
+                               placeholder="Search manga titles or authors..." />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="genre" class="form-select">
+                        <option value="">All Genres</option>
+                        @foreach (var genre in Model.Genres)
+                        {
+                            <option value="@genre" selected="@(Model.SelectedGenre == genre)">@genre</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="price" class="form-select">
+                        <option value="">All Prices</option>
+                        <option value="0-999" selected="@(Model.SelectedPrice == "0-999")">Under ₱999</option>
+                        <option value="1000-2999" selected="@(Model.SelectedPrice == "1000-2999")">₱1,000 - ₱2,999</option>
+                        <option value="3000-5999" selected="@(Model.SelectedPrice == "3000-5999")">₱3,000 - ₱5,999</option>
+                        <option value="6000-99999" selected="@(Model.SelectedPrice == "6000-99999")">₱6,000+</option>
+                    </select>
+                </div>
+                <div class="col-md-2 text-end">
+                    <button type="submit" class="btn btn-primary btn-sm me-2">
+                        <i class="fas fa-filter me-1"></i>Filter
+                    </button>
+                    <small class="text-muted">
+                        <span id="productCount">@Model.FilteredProducts.Count products</span>
+                    </small>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Products grid — server-rendered instead of JS-injected -->
+    <section class="py-4">
+        <div class="container">
+            <div class="row" id="allProducts">
+                @if (Model.FilteredProducts.Count == 0)
+                {
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-info-circle me-2"></i>No products found
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @foreach (var product in Model.FilteredProducts)
+                    {
+                        await Html.RenderPartialAsync("_ProductCard", product);
+                    }
+                }
+            </div>
+        </div>
+    </section>
+</main>
+
+@* Success message for add-to-cart feedback *@
+@if (!string.IsNullOrEmpty(Model.CartMessage))
+{
+    <div class="alert alert-success position-fixed" style="top:80px;right:20px;z-index:9999;min-width:300px;" id="cartAlert">
+        <i class="fas fa-check-circle me-2"></i>@Model.CartMessage
+    </div>
+    <script>setTimeout(function(){ document.getElementById('cartAlert')?.remove(); }, 3000);</script>
+}
